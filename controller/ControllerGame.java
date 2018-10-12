@@ -1,20 +1,18 @@
 package controller;
 
-import model.ModelGame;
-import model.ModelPeca;
+import model.Game;
+import model.Peca;
 
 /**
  * Controller principal da aplicação
  * @author Jean Poffo
  * @since 09/08/2018
  */
-public class ControllerGame {
+public class ControllerGame implements InterfaceControllerGame{
     
     private static ControllerGame instance;
     
-    private ModelGame jogoAtual;
-    
-//    private ModelPeca
+    private Game gameAtual;
     
     /**
      * Construtor privado, forçando a usar Singleton
@@ -23,12 +21,12 @@ public class ControllerGame {
         this.init();
     }
 
-    public ModelGame getJogoAtual() {
-        return jogoAtual;
+    public Game getGameAtual() {
+        return gameAtual;
     }
 
-    public void setJogoAtual(ModelGame jogoAtual) {
-        this.jogoAtual = jogoAtual;
+    public void setGameAtual(Game gameAtual) {
+        this.gameAtual = gameAtual;
     }
     
     /**
@@ -45,5 +43,25 @@ public class ControllerGame {
     
     private void init() {
         
+    }
+
+    @Override
+    public int getNumeroLinhasTabuleiro() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getNumeroColunasTabuleiro() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Peca getPecaTabuleiro(int linha, int coluna) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void movimentaPecaTabuleiro() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

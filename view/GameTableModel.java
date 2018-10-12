@@ -1,6 +1,6 @@
 package view;
 
-import controller.ControllerGame;
+import controller.InterfaceControllerGame;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -10,24 +10,24 @@ import javax.swing.table.AbstractTableModel;
  */
 public class GameTableModel extends AbstractTableModel {
 
-    ControllerGame controller;
+    InterfaceControllerGame controller;
 
-    public GameTableModel(ControllerGame controller) {
+    public GameTableModel(InterfaceControllerGame controller) {
         this.controller = controller;
     }
     
     @Override
     public int getRowCount() {
-        throw new UnsupportedOperationException("@todo");
+        return this.controller.getNumeroLinhasTabuleiro();
     }
 
     @Override
     public int getColumnCount() {
-        throw new UnsupportedOperationException("@todo");
+        return this.controller.getNumeroColunasTabuleiro();
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        throw new UnsupportedOperationException("@todo");
+    public Object getValueAt(int linha, int coluna) {
+        return this.controller.getPecaTabuleiro(linha, coluna);
     }
 }

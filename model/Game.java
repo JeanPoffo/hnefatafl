@@ -5,7 +5,7 @@ package model;
  * @author Jean Poffo
  * @since 20/08/2018
  */
-public class ModelGame {
+public class Game {
     
     final int MODO_HNEFATAFL = 1;
     final int MODO_BRANDUBH  = 2;
@@ -13,13 +13,13 @@ public class ModelGame {
     
     private int modoJogo;
     
-    private ModelJogador jogadorUm;
+    private Jogador jogadorUm;
     
-    private ModelJogador jogadorDois;
+    private Jogador jogadorDois;
 
-    public ModelGame() {}
+    public Game() {}
     
-    public ModelGame(int modoJogo, ModelJogador jogadorUm, ModelJogador jogadorDois) {
+    public Game(int modoJogo, Jogador jogadorUm, Jogador jogadorDois) {
         this.modoJogo    = modoJogo;
         this.jogadorUm   = jogadorUm;
         this.jogadorDois = jogadorDois;
@@ -33,19 +33,19 @@ public class ModelGame {
         this.modoJogo = modoJogo;
     }
 
-    public ModelJogador getJogadorUm() {
+    public Jogador getJogadorUm() {
         return jogadorUm;
     }
 
-    public void setJogadorUm(ModelJogador jogadorUm) {
+    public void setJogadorUm(Jogador jogadorUm) {
         this.jogadorUm = jogadorUm;
     }
 
-    public ModelJogador getJogadorDois() {
+    public Jogador getJogadorDois() {
         return jogadorDois;
     }
 
-    public void setJogadorDois(ModelJogador jogadorDois) {
+    public void setJogadorDois(Jogador jogadorDois) {
         this.jogadorDois = jogadorDois;
     }
 }

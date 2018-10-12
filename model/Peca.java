@@ -5,15 +5,15 @@ package model;
  * @author Jean Poffo
  * @since  22/08/2018
  */
-public class ModelPeca {
+public class Peca {
     
     private int id;
     
-    private ModelJogador jogador;
+    private Jogador jogador;
 
-    public ModelPeca() {}
+    public Peca() {}
 
-    public ModelPeca(int id, ModelJogador jogador) {
+    public Peca(int id, Jogador jogador) {
         this.id      = id;
         this.jogador = jogador;
     }
@@ -26,11 +26,11 @@ public class ModelPeca {
         this.id = id;
     }
 
-    public ModelJogador getJogador() {
+    public Jogador getJogador() {
         return jogador;
     }
 
-    public void setJogador(ModelJogador jogador) {
+    public void setJogador(Jogador jogador) {
         this.jogador = jogador;
     }
 }

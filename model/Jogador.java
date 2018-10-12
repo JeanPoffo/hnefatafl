@@ -5,15 +5,15 @@ package model;
  * @author Jean Poffo
  * @since 20/08/2018
  */
-public class ModelJogador {
+public class Jogador {
     
     private int codigo;
     
     private String nome;
 
-    public ModelJogador() {}
+    public Jogador() {}
     
-    public ModelJogador(int codigo, String nome) {
+    public Jogador(int codigo, String nome) {
         this.codigo = codigo;
         this.nome   = nome;
     }
