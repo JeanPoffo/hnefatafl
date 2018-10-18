@@ -7,45 +7,50 @@ package model;
  */
 public class Game {
     
-    final int MODO_HNEFATAFL = 1;
-    final int MODO_BRANDUBH  = 2;
-    final int MODO_TABLUT    = 3;
+    private Jogador atacante;
     
-    private int modoJogo;
+    private Jogador defensor;
     
-    private Jogador jogadorUm;
+    private StrategyTabuleiro estrategia;
     
-    private Jogador jogadorDois;
+    private CasaTabuleiro[][] tabuleiro;
 
     public Game() {}
     
-    public Game(int modoJogo, Jogador jogadorUm, Jogador jogadorDois) {
-        this.modoJogo    = modoJogo;
-        this.jogadorUm   = jogadorUm;
-        this.jogadorDois = jogadorDois;
+    public Jogador getAtacante() {
+        return atacante;
     }
 
-    public int getModoJogo() {
-        return modoJogo;
+    public void setAtacante(Jogador atacante) {
+        this.atacante = atacante;
     }
 
-    public void setModoJogo(int modoJogo) {
-        this.modoJogo = modoJogo;
+    public Jogador getDefensor() {
+        return defensor;
     }
 
-    public Jogador getJogadorUm() {
-        return jogadorUm;
+    public void setDefensor(Jogador defensor) {
+        this.defensor = defensor;
     }
 
-    public void setJogadorUm(Jogador jogadorUm) {
-        this.jogadorUm = jogadorUm;
+    public StrategyTabuleiro getEstrategia() {
+        return estrategia;
     }
 
-    public Jogador getJogadorDois() {
-        return jogadorDois;
+    public void setEstrategia(StrategyTabuleiro estrategia) {
+        this.estrategia = estrategia;
+        this.tabuleiro  = estrategia.montaTabuleiro();
     }
 
-    public void setJogadorDois(Jogador jogadorDois) {
-        this.jogadorDois = jogadorDois;
+    public CasaTabuleiro[][] getTabuleiro() {
+        return tabuleiro;
+    }
+    
+    public int getLinhasTabuleiro() {
+        return this.tabuleiro.length;
+    }
+    
+    public int getColunasTabuleiro() {
+        return this.tabuleiro[0].length;
     }
 }

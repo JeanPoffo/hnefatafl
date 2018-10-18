@@ -28,6 +28,10 @@ public class GameTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int linha, int coluna) {
-        return this.controller.getPecaTabuleiro(linha, coluna);
+        return this.controller.getCasaTabuleiro(linha, coluna);
+    }
+
+    public void movePeca(int linha, int coluna) {
+        this.controller.movimentaPecaTabuleiro(linha, coluna);
     }
 }

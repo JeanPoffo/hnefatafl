@@ -6,4 +6,9 @@ package view;
  */
 public interface ObserverGame {
     
+    public void atualizaEstrategia();
+    
+    public void atualizaJogadorAtacante();
+    
+    public void atualizaJogadorDefensor();
 }

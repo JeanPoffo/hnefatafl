@@ -1,11 +1,13 @@
 package model;
 
+import javax.swing.ImageIcon;
+
 /**
  * Classe Modelo da peça do jogo
  * @author Jean Poffo
  * @since  22/08/2018
  */
-public class Peca {
+abstract public class Peca {
     
     private int id;
     
@@ -33,4 +35,10 @@ public class Peca {
     public void setJogador(Jogador jogador) {
         this.jogador = jogador;
     }
+    
+    public boolean podeMovimentarRefugio() {
+        return true;
+    }
+    
+    abstract public ImageIcon getIcone();
 }

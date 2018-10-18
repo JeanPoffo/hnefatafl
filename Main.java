@@ -1,3 +1,6 @@
+import controller.ControllerGame;
+import view.ViewGame;
+
 /*
  * The MIT License
  *
@@ -33,6 +36,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        ControllerGame controller = ControllerGame.getInstance();
+        new ViewGame(controller);
     }   
 }

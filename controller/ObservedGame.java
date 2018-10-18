@@ -1,5 +1,7 @@
 package controller;
 
+import view.ObserverGame;
+
 /**
  * Classe de Interface Observable (Observado)
  * @author Jean Poffo
@@ -7,4 +9,7 @@ package controller;
  */
 public interface ObservedGame {
     
+    public void adicionarObserver(ObserverGame observer);
+
+    public void removerObserver(ObserverGame observer);    
 }
