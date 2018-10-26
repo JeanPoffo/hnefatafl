@@ -39,7 +39,7 @@ public class Game {
 
     public void setEstrategia(StrategyTabuleiro estrategia) {
         this.estrategia = estrategia;
-        this.tabuleiro  = estrategia.montaTabuleiro();
+        this.tabuleiro  = estrategia.montaTabuleiro(this.getAtacante(), this.getDefensor());
     }
 
     public CasaTabuleiro[][] getTabuleiro() {

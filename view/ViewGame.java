@@ -2,6 +2,7 @@ package view;
 
 import controller.ControllerGame;
 import controller.InterfaceControllerGame;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -42,12 +43,15 @@ public class ViewGame extends JFrame implements ObserverGame {
         
         this.controller.adicionarObserver(this);
         
+        this.initComponents();
+        
+        this.addListeners();
+        
         super.setTitle("Hnefatafl");
         super.setDefaultCloseOperation(EXIT_ON_CLOSE);
         super.setResizable(false);
-        
-        this.initComponents();
-        
+        super.setIconImage(new ImageIcon(getClass().getResource("/view/icons/game.png")).getImage());
+        super.setLocationRelativeTo(null);
         super.setVisible(true);
     }
 
@@ -127,7 +131,7 @@ public class ViewGame extends JFrame implements ObserverGame {
 
         this.menuPrincipal.add(this.menuSobre);
 
-        setJMenuBar(this.menuPrincipal);
+        super.setJMenuBar(this.menuPrincipal);
 
         javax.swing.GroupLayout panelStatusLayout = new javax.swing.GroupLayout(this.panelStatus);
         this.panelStatus.setLayout(panelStatusLayout);
@@ -165,6 +169,12 @@ public class ViewGame extends JFrame implements ObserverGame {
     }
     
     private void addListeners() {
+        this.itemMenuNovoJogo.addActionListener((e) -> {
+            
+        });
         
+        this.itemMenuSair.addActionListener((e) -> {
+            System.exit(0);
+        });   
     }
 }

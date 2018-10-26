@@ -40,9 +40,9 @@ public class ControllerGame implements InterfaceControllerGame {
     public void adicionarObserver(ObserverGame observer) {
         this.observers.add(observer);
         
-        observer.atualizaEstrategia();
         observer.atualizaJogadorAtacante();
         observer.atualizaJogadorDefensor();
+        observer.atualizaEstrategia();
     }
 
     @Override

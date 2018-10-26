@@ -9,12 +9,22 @@ public class CasaTabuleiro {
     
     private boolean refugio;
     
+    private boolean trono;
+    
     private Peca peca;
 
     public CasaTabuleiro(boolean refugio) {
         this.refugio = refugio;
     }
 
+    public boolean isTrono() {
+        return trono;
+    }
+
+    public void setTrono(boolean trono) {
+        this.trono = trono;
+    }
+    
     public boolean isRefugio() {
         return refugio;
     }

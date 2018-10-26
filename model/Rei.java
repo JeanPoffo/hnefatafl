@@ -11,6 +11,6 @@ public class Rei extends Peca {
 
     @Override
     public ImageIcon getIcone() {
-        return new ImageIcon(getClass().getResource("/view/icons/todo.png"));
+        return new ImageIcon(getClass().getResource("/view/icons/rei.png"));
     }
 }
