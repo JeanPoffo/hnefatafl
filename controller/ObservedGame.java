@@ -12,4 +12,6 @@ public interface ObservedGame {
     public void adicionarObserver(ObserverGame observer);
 
     public void removerObserver(ObserverGame observer);    
+    
+    public void notifyStatus(String status);
 }

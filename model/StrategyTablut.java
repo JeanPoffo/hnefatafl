@@ -14,7 +14,11 @@ public class StrategyTablut implements StrategyTabuleiro {
         
         for (int linha = 0; linha <= 8; linha++) {
             for (int coluna = 0; coluna <= 8; coluna++) {
-                tabuleiro[linha][coluna] = new CasaTabuleiro(false);
+                CasaTabuleiro casaTabuleiro = new CasaTabuleiro(false);
+                casaTabuleiro.setPosicaoX(linha);
+                casaTabuleiro.setPosicaoY(coluna);
+                
+                tabuleiro[linha][coluna] = casaTabuleiro;
             }
         }
         

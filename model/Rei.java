@@ -13,4 +13,9 @@ public class Rei extends Peca {
     public ImageIcon getIcone() {
         return new ImageIcon(getClass().getResource("/view/icons/rei.png"));
     }
+
+    @Override
+    public boolean podeMovimentarTrono() {
+        return false;
+    }
 }

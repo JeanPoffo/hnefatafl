@@ -2,6 +2,11 @@ package view;
 
 import controller.ControllerGame;
 import controller.InterfaceControllerGame;
+import controller.StrategyMultiplaCasa;
+import controller.StrategyReiQuatroCasas;
+import controller.StrategyReiUmaCasa;
+import controller.StrategyUmaCasa;
+import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -58,40 +63,92 @@ public class ViewGame extends JFrame implements ObserverGame {
     public InterfaceControllerGame getController() {
         return this.controller;
     }
-    
-    @Override
-    public void atualizaEstrategia() {
-        String[] opcoes = {"Brandubh", "Hnefatafl", "Tablut"};
-        int opcao = JOptionPane.showOptionDialog(this, "Escolha um modo de Jogo:", "Hnefatafl", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
-        
-        switch(opcao) {
-            case 0: this.getController().setEstrategia(new StrategyBrandubh());
-                break;
-            case 1: this.getController().setEstrategia(new StrategyHnefatafl());
-                break;
-            case 2: this.getController().setEstrategia(new StrategyTablut());
-                break;
-        }
-    }
 
     @Override
     public void atualizaJogadorAtacante() {
         String nomeAtacante = JOptionPane.showInputDialog(this, "Digite o nome do atacante:", "Hnefatafl", JOptionPane.QUESTION_MESSAGE);
         
-        Jogador jogadorAtacante = new Jogador(1, nomeAtacante);
+        if(nomeAtacante == null || nomeAtacante.equals("")) {
+            JOptionPane.showMessageDialog(this, "Por favor informe um nome", "Hnefatafl", JOptionPane.WARNING_MESSAGE);
+            this.atualizaJogadorAtacante();
+        }
+        else {
+            Jogador jogadorAtacante = new Jogador(1, nomeAtacante);
         
-        this.getController().setJogadorAtacante(jogadorAtacante);
+            this.getController().setJogadorAtacante(jogadorAtacante);
+        }
     }
 
     @Override
     public void atualizaJogadorDefensor() {
         String nomeDefensor = JOptionPane.showInputDialog(this, "Digite o nome do defensor:", "Hnefatafl", JOptionPane.QUESTION_MESSAGE);
         
-        Jogador jogadorDefensor = new Jogador(2, nomeDefensor);
+        if(nomeDefensor == null || nomeDefensor.equals("")) {
+            JOptionPane.showMessageDialog(this, "Por favor informe um nome", "Hnefatafl", JOptionPane.WARNING_MESSAGE);
+            this.atualizaJogadorDefensor();
+        }
+        else {
+            Jogador jogadorDefensor = new Jogador(2, nomeDefensor);
         
-        this.getController().setJogadorDefensor(jogadorDefensor);
+            this.getController().setJogadorDefensor(jogadorDefensor);
+        }
     }
 
+    @Override
+    public void atualizaEstrategiaTabuleiro() {
+        String[] opcoes = {"Brandubh", "Hnefatafl", "Tablut"};
+        int opcao = JOptionPane.showOptionDialog(this, "Escolha um modo de Jogo:", "Hnefatafl", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
+        
+        switch(opcao) {
+            case 0: this.getController().setEstrategiaTabuleiro(new StrategyBrandubh());
+                break;
+            case 1: this.getController().setEstrategiaTabuleiro(new StrategyHnefatafl());
+                break;
+            case 2: this.getController().setEstrategiaTabuleiro(new StrategyTablut());
+                break;
+            default: 
+                JOptionPane.showMessageDialog(this, "Por favor informe uma opção", "Hnefatafl", JOptionPane.WARNING_MESSAGE);
+                this.atualizaEstrategiaTabuleiro();
+        }
+    }
+
+    @Override
+    public void atualizaEstrategiaJogada() {
+        String[] opcoes = {"Uma Casa", "Várias Casas"};
+        int opcao = JOptionPane.showOptionDialog(this, "Escolha quantas casas a peça poderá se movimentar:", "Hnefatafl", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
+        
+        switch(opcao) {
+            case 0: this.getController().setEstrategiaJogada(new StrategyUmaCasa());
+                break;
+            case 1: this.getController().setEstrategiaJogada(new StrategyMultiplaCasa());
+                break;
+            default: 
+                JOptionPane.showMessageDialog(this, "Por favor informe uma opção", "Hnefatafl", JOptionPane.WARNING_MESSAGE);
+                this.atualizaEstrategiaJogada();
+        }
+    }
+    
+    @Override
+    public void atualizaEstrategiaJogadaRei() {
+        String[] opcoes = {"Uma Casa", "Quatro Casas"};
+        int opcao = JOptionPane.showOptionDialog(this, "Escolha quantas casas o Rei poderá se movimentar:", "Hnefatafl", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
+        
+        switch(opcao) {
+            case 0: this.getController().setEstrategiaJogadaRei(new StrategyReiUmaCasa());
+                break;
+            case 1: this.getController().setEstrategiaJogadaRei(new StrategyReiQuatroCasas());
+                break;
+            default: 
+                JOptionPane.showMessageDialog(this, "Por favor informe uma opção", "Hnefatafl", JOptionPane.WARNING_MESSAGE);
+                this.atualizaEstrategiaJogadaRei();
+        }
+    }
+    
+    @Override
+    public void atualizaStatus(String status) {
+       this.labelStatus.setText(status);
+    }
+    
     private void initComponents() {
         this.tableModel           = new GameTableModel(ControllerGame.getInstance());
         this.tableGame            = new GameTable(this.tableModel);
@@ -106,7 +163,7 @@ public class ViewGame extends JFrame implements ObserverGame {
         this.menuSobre            = new JMenu();
         this.itemMenuSobre        = new JMenuItem();
 
-        this.labelStatus.setText("Hello!");
+        this.labelStatus.setText("Olá! O jogo começa do lado dos defensores do rei!");
 
         this.menuJogo.setText("Jogo");
 
@@ -170,11 +227,23 @@ public class ViewGame extends JFrame implements ObserverGame {
     
     private void addListeners() {
         this.itemMenuNovoJogo.addActionListener((e) -> {
-            
+            JOptionPane.showMessageDialog(this, "Futura implementação");
+        });
+        
+        this.itemMenuSalvar.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(this, "Futura implementação");
+        });
+        
+        this.itemMenuCarregarJogo.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(this, "Futura implementação");
         });
         
         this.itemMenuSair.addActionListener((e) -> {
             System.exit(0);
         });   
+        
+        this.itemMenuSobre.addActionListener((e) -> {
+            JOptionPane.showMessageDialog(this, "Desenvolvido por Jean Poffo", "Hnefatafl", JOptionPane.INFORMATION_MESSAGE);
+        });  
     }
 }

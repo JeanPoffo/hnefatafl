@@ -37,7 +37,11 @@ abstract public class Peca {
     }
     
     public boolean podeMovimentarRefugio() {
-        return true;
+        return false;
+    }
+    
+    public boolean podeMovimentarTrono() {
+        return false;
     }
     
     abstract public ImageIcon getIcone();

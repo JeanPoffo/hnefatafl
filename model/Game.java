@@ -11,6 +11,8 @@ public class Game {
     
     private Jogador defensor;
     
+    private Jogador jogadorAtual;
+    
     private StrategyTabuleiro estrategia;
     
     private CasaTabuleiro[][] tabuleiro;
@@ -33,6 +35,22 @@ public class Game {
         this.defensor = defensor;
     }
 
+    public Jogador getJogadorAtual() {
+        return jogadorAtual;
+    }
+    
+    public void alternaJogador() {
+        if(this.jogadorAtual == null) {
+            this.jogadorAtual = this.defensor;
+        }
+        else if (this.jogadorAtual.equals(this.atacante)){
+            this.jogadorAtual = this.defensor;
+        }
+        else {
+            this.jogadorAtual = this.atacante;
+        }
+    }
+    
     public StrategyTabuleiro getEstrategia() {
         return estrategia;
     }

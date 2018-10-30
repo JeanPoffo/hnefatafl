@@ -13,4 +13,9 @@ public class MercenarioTablut extends Peca {
     public ImageIcon getIcone() {
         return new ImageIcon(getClass().getResource("/view/icons/mercenario.png"));
     }
+
+    @Override
+    public boolean podeMovimentarRefugio() {
+        return true;
+    }   
 }

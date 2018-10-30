@@ -14,7 +14,11 @@ public class StrategyBrandubh implements StrategyTabuleiro {
         
         for (int linha = 0; linha <= 6; linha++) {
             for (int coluna = 0; coluna <= 6; coluna++) {
-                tabuleiro[linha][coluna] = new CasaTabuleiro(false);
+                CasaTabuleiro casaTabuleiro = new CasaTabuleiro(false);
+                casaTabuleiro.setPosicaoX(linha);
+                casaTabuleiro.setPosicaoY(coluna);
+                
+                tabuleiro[linha][coluna] = casaTabuleiro;
             }
         }
         
