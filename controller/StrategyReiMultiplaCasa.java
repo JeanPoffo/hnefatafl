@@ -3,11 +3,11 @@ package controller;
 import model.CasaTabuleiro;
 
 /**
- * Classe de estratégia para validar jogadas do Rei - Uma casa
+ * Classe de estratégia para validar jogadas do Rei - Multipla casas
  * @author Jean Poffo
  * @since 29/10/2018
  */
-public class StrategyReiUmaCasa extends StrategyJogadaReiBase {
+public class StrategyReiMultiplaCasa extends StrategyJogadaReiBase {
 
     /**
      * Futuramente ao invés de extender a classe base, fazer um decorator
@@ -20,9 +20,9 @@ public class StrategyReiUmaCasa extends StrategyJogadaReiBase {
     public void validaJogada(CasaTabuleiro casaTabuleiroAnterior, CasaTabuleiro casaTabuleiroAtual, CasaTabuleiro[][] tabuleiro) throws Exception {
         super.validaJogada(casaTabuleiroAnterior, casaTabuleiroAtual, tabuleiro);
         
-        this.validaJogadaQuantidadeCasas(casaTabuleiroAnterior, casaTabuleiroAtual, 1);
+        this.validaJogadaPecaCaminho(casaTabuleiroAnterior, casaTabuleiroAtual, tabuleiro);
         
-        if(this.validaRaichi(casaTabuleiroAtual, tabuleiro, 1)) {
+        if(this.validaRaichi(casaTabuleiroAtual, tabuleiro, 99)) {
             ControllerGame.getInstance().notifyStatusShake("Raichi!");
         }
     }

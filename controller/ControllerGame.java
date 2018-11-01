@@ -69,14 +69,35 @@ public class ControllerGame implements InterfaceControllerGame {
     
     private void alternaJogador() {
         this.getGame().alternaJogador();
-        this.notifyStatus("Jogada de " + this.getGame().getJogadorAtual().getNome());
+        this.notifyStatusJogador("Jogada de " + this.getGame().getJogadorAtual().getNome());
+    }
+
+    @Override
+    public void desfazUltimaJogada() {
+        if(this.invokerJogada.undo()) {
+            this.alternaJogador();
+        }
     }
     
     @Override
     public void notifyStatus(String status) {
-        for (ObserverGame observer : this.observers) {
+        this.observers.forEach((observer) -> {
             observer.atualizaStatus(status);
-        }
+        });
+    }
+
+    @Override
+    public void notifyStatusShake(String status) {
+        this.observers.forEach((observer) -> {
+            observer.atualizaStatusShake(status);
+        });
+    }
+
+    @Override
+    public void notifyStatusJogador(String status) {
+        this.observers.forEach((observer) -> {
+            observer.atualizaStatusJogador(status);
+        });
     }
     
     @Override
@@ -104,10 +125,18 @@ public class ControllerGame implements InterfaceControllerGame {
                 this.validaJogadorCasaSelecionada(casaTabuleiroAtual);
                 
                 this.casaTabuleiroSelecionada = casaTabuleiroAtual;
+                
+                /** Caso for selecionada uma peça válida limpa o status */
+                this.notifyStatus("");
             } 
             catch (Exception e) {
                 this.notifyStatus(e.getMessage());
             }
+        }
+        /** Caso o jogador resolva trocar de peça */
+        else if(this.alteraPecaAtual(this.casaTabuleiroSelecionada, casaTabuleiroAtual)) {
+            this.casaTabuleiroSelecionada = null;
+            this.movimentaPecaTabuleiro(linha, coluna);
         }
         else {
             try {
@@ -118,31 +147,57 @@ public class ControllerGame implements InterfaceControllerGame {
                 else {
                     this.estrategiaJogada.validaJogada(this.casaTabuleiroSelecionada, casaTabuleiroAtual, this.getGame().getTabuleiro());
                 }
-                
+
                 /** Adiciona a jogada ao Invoker e executa ela */
                 this.invokerJogada.addCommand(new CommandJogada(this.casaTabuleiroSelecionada, casaTabuleiroAtual));
                 this.invokerJogada.execute();
                 this.casaTabuleiroSelecionada = null;
-                
+
                 this.alternaJogador();
-            } 
+            }
             catch (Exception e) {
                 this.notifyStatus(e.getMessage());
             }
         }
     }
 
-    /** Validações Gerais da Seleção da Peça */
+    /**
+     * Valida se a casa selecionada possui peça
+     * @param casaTabuleiro
+     * @throws Exception 
+     */
     private void validaCasaSelecionadaPossuiPeca(CasaTabuleiro casaTabuleiro) throws Exception {
         if(casaTabuleiro.getPeca() == null) {
             throw new Exception("Selecione uma casa que possua peça!");
         }
     }
     
+    /**
+     * Valida se oo jogador escolheu uma peça dele
+     * @param casaTabuleiro
+     * @throws Exception 
+     */
     private void validaJogadorCasaSelecionada(CasaTabuleiro casaTabuleiro) throws Exception {
         if(!casaTabuleiro.getPeca().getJogador().equals(this.getGame().getJogadorAtual())) {
             throw new Exception("Selecione somente peças suas!");
         }
+    }
+    
+    /**
+     * Verifica se foi selecionada uma peça do mesmo jogador na segunda jogada
+     * Sendo assim, ele esta trocando a peça da jogada
+     * @param casaTabuleiroAnterior
+     * @param casaTabuleiroAtual
+     * @return 
+     */
+    private boolean alteraPecaAtual(CasaTabuleiro casaTabuleiroAnterior, CasaTabuleiro casaTabuleiroAtual) {
+        if(casaTabuleiroAtual.getPeca() != null) {
+            if(casaTabuleiroAnterior.getPeca().getJogador().equals(casaTabuleiroAtual.getPeca().getJogador())) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     @Override

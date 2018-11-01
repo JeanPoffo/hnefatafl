@@ -17,4 +17,8 @@ public interface ObserverGame {
     public void atualizaJogadorDefensor();
     
     public void atualizaStatus(String status);
+    
+    public void atualizaStatusShake(String status);
+    
+    public void atualizaStatusJogador(String status);
 }

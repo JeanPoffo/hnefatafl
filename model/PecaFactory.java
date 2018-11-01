@@ -7,9 +7,9 @@ package model;
  */
 abstract public class PecaFactory {
     
-    abstract public Peca createMercenario(); 
+    abstract public Mercenario createMercenario(); 
     
-    abstract public Peca createDefensor(); 
+    abstract public Defensor createDefensor(); 
     
-    abstract public Peca createRei();
+    abstract public Rei createRei();
 }

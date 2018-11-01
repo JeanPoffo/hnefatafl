@@ -8,17 +8,17 @@ package model;
 public class PecaFactoryTablut extends PecaFactory {
 
     @Override
-    public Peca createMercenario() {
+    public Mercenario createMercenario() {
         return new MercenarioTablut();
     }
 
     @Override
-    public Peca createDefensor() {
+    public Defensor createDefensor() {
         return new Defensor();
     }
 
     @Override
-    public Peca createRei() {
+    public Rei createRei() {
         return new Rei();
     }
 }

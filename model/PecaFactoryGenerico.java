@@ -8,17 +8,17 @@ package model;
 public class PecaFactoryGenerico extends PecaFactory {
 
     @Override
-    public Peca createMercenario() {
+    public Mercenario createMercenario() {
         return new Mercenario();
     }
 
     @Override
-    public Peca createDefensor() {
+    public Defensor createDefensor() {
         return new Defensor();
     }
 
     @Override
-    public Peca createRei() {
+    public Rei createRei() {
         return new Rei();
     }
 }

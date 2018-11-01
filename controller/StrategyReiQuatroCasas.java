@@ -22,5 +22,9 @@ public class StrategyReiQuatroCasas extends StrategyJogadaReiBase {
         
         this.validaJogadaQuantidadeCasas(casaTabuleiroAnterior, casaTabuleiroAtual, 4);
         this.validaJogadaPecaCaminho(casaTabuleiroAnterior, casaTabuleiroAtual, tabuleiro);
+        
+        if(this.validaRaichi(casaTabuleiroAtual, tabuleiro, 4)) {
+            ControllerGame.getInstance().notifyStatusShake("Raichi!");
+        }
     }
 }

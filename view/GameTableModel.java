@@ -33,6 +33,6 @@ public class GameTableModel extends AbstractTableModel {
 
     public void movePeca(int linha, int coluna) {
         this.controller.movimentaPecaTabuleiro(linha, coluna);
-        this.fireTableDataChanged();
+        super.fireTableDataChanged();
     }
 }

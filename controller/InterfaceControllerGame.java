@@ -19,6 +19,8 @@ public interface InterfaceControllerGame extends ObservedGame {
     
     public void movimentaPecaTabuleiro(int linha, int coluna);
     
+    public void desfazUltimaJogada();
+    
     public void setEstrategiaTabuleiro(StrategyTabuleiro estrategia);
     
     public void setEstrategiaJogada(StrategyJogadaBase estrategia);

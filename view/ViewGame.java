@@ -3,11 +3,13 @@ package view;
 import controller.ControllerGame;
 import controller.InterfaceControllerGame;
 import controller.StrategyMultiplaCasa;
+import controller.StrategyReiMultiplaCasa;
 import controller.StrategyReiQuatroCasas;
 import controller.StrategyReiUmaCasa;
 import controller.StrategyUmaCasa;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -33,6 +35,8 @@ public class ViewGame extends JFrame implements ObserverGame {
     private JMenuItem itemMenuSalvar;
     private JMenuItem itemMenuSobre;
     private JLabel    labelStatus;
+    private JLabel    labelJogador;
+    private JButton   botaoDesfazerJogada;
     private JMenu     menuJogo;
     private JMenuBar  menuPrincipal;
     private JMenu     menuSobre;
@@ -130,13 +134,15 @@ public class ViewGame extends JFrame implements ObserverGame {
     
     @Override
     public void atualizaEstrategiaJogadaRei() {
-        String[] opcoes = {"Uma Casa", "Quatro Casas"};
+        String[] opcoes = {"Uma Casa", "Quatro Casas", "Várias Casas"};
         int opcao = JOptionPane.showOptionDialog(this, "Escolha quantas casas o Rei poderá se movimentar:", "Hnefatafl", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
         
         switch(opcao) {
             case 0: this.getController().setEstrategiaJogadaRei(new StrategyReiUmaCasa());
                 break;
             case 1: this.getController().setEstrategiaJogadaRei(new StrategyReiQuatroCasas());
+                break;
+            case 2: this.getController().setEstrategiaJogadaRei(new StrategyReiMultiplaCasa());
                 break;
             default: 
                 JOptionPane.showMessageDialog(this, "Por favor informe uma opção", "Hnefatafl", JOptionPane.WARNING_MESSAGE);
@@ -148,12 +154,27 @@ public class ViewGame extends JFrame implements ObserverGame {
     public void atualizaStatus(String status) {
        this.labelStatus.setText(status);
     }
+
+    @Override
+    public void atualizaStatusShake(String status) {
+        this.labelStatus.setText(status);
+        
+        ShakeJFrameAdapter shakeJFrame = new ShakeJFrameAdapter();
+        shakeJFrame.shake(this);
+    }
+    
+    @Override
+    public void atualizaStatusJogador(String status) {
+        this.labelJogador.setText(status);
+    }
     
     private void initComponents() {
         this.tableModel           = new GameTableModel(ControllerGame.getInstance());
         this.tableGame            = new GameTable(this.tableModel);
         this.panelStatus          = new JPanel();
         this.labelStatus          = new JLabel();
+        this.labelJogador         = new JLabel();
+        this.botaoDesfazerJogada  = new JButton();
         this.menuPrincipal        = new JMenuBar();
         this.menuJogo             = new JMenu();
         this.itemMenuNovoJogo     = new JMenuItem();
@@ -164,19 +185,28 @@ public class ViewGame extends JFrame implements ObserverGame {
         this.itemMenuSobre        = new JMenuItem();
 
         this.labelStatus.setText("Olá! O jogo começa do lado dos defensores do rei!");
+        
+        this.labelJogador.setText("Defensores");
 
+        this.botaoDesfazerJogada.setText("Desfazer Jogada");
+        this.botaoDesfazerJogada.setIcon(new ImageIcon(getClass().getResource("/view/icons/desfazer.png")));
+        
         this.menuJogo.setText("Jogo");
 
         this.itemMenuNovoJogo.setText("Novo Jogo");
+        this.itemMenuNovoJogo.setIcon(new ImageIcon(getClass().getResource("/view/icons/novo.png")));
         this.menuJogo.add(this.itemMenuNovoJogo);
 
         this.itemMenuSalvar.setText("Salvar Jogo");
+        this.itemMenuSalvar.setIcon(new ImageIcon(getClass().getResource("/view/icons/salvar.png")));
         this.menuJogo.add(this.itemMenuSalvar);
 
         this.itemMenuCarregarJogo.setText("Carregar Jogo");
+        this.itemMenuCarregarJogo.setIcon(new ImageIcon(getClass().getResource("/view/icons/carregar.png")));
         this.menuJogo.add(this.itemMenuCarregarJogo);
 
         this.itemMenuSair.setText("Sair");
+        this.itemMenuSair.setIcon(new ImageIcon(getClass().getResource("/view/icons/sair.png")));
         this.menuJogo.add(this.itemMenuSair);
 
         this.menuPrincipal.add(this.menuJogo);
@@ -184,26 +214,34 @@ public class ViewGame extends JFrame implements ObserverGame {
         this.menuSobre.setText("Sobre");
 
         this.itemMenuSobre.setText("Hnefatafl!");
+        this.itemMenuSobre.setIcon(new ImageIcon(getClass().getResource("/view/icons/sobre.png")));
         this.menuSobre.add(this.itemMenuSobre);
 
         this.menuPrincipal.add(this.menuSobre);
 
         super.setJMenuBar(this.menuPrincipal);
 
-        javax.swing.GroupLayout panelStatusLayout = new javax.swing.GroupLayout(this.panelStatus);
-        this.panelStatus.setLayout(panelStatusLayout);
+        javax.swing.GroupLayout panelStatusLayout = new javax.swing.GroupLayout(panelStatus);
+        panelStatus.setLayout(panelStatusLayout);
         panelStatusLayout.setHorizontalGroup(
             panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelStatusLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(this.labelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelJogador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botaoDesfazerJogada)
                 .addContainerGap())
         );
         panelStatusLayout.setVerticalGroup(
             panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelStatusLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(this.labelStatus)
+                .addGroup(panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelStatus)
+                    .addComponent(botaoDesfazerJogada)
+                    .addComponent(labelJogador))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         
@@ -244,6 +282,13 @@ public class ViewGame extends JFrame implements ObserverGame {
         
         this.itemMenuSobre.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "Desenvolvido por Jean Poffo", "Hnefatafl", JOptionPane.INFORMATION_MESSAGE);
-        });  
+        });
+        
+        this.botaoDesfazerJogada.addActionListener((e) -> {
+            this.controller.desfazUltimaJogada();
+            
+            /** @todo Melhorar isso aqui */
+            this.tableModel.fireTableDataChanged();
+        });
     }
 }
