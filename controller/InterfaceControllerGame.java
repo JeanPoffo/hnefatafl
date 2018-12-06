@@ -30,4 +30,8 @@ public interface InterfaceControllerGame extends ObservedGame {
     public void setJogadorAtacante(Jogador jogador);
     
     public void setJogadorDefensor(Jogador jogador);
+    
+    public void verificaStatus();
+    
+    public void finalizarGame();
 }

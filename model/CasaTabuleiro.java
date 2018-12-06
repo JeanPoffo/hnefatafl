@@ -1,5 +1,7 @@
 package model;
 
+import controller.Visitor;
+
 /**
  * Classe de Casa do Tabuleiro
  * @author Jean Poffo
@@ -20,7 +22,11 @@ public class CasaTabuleiro {
     public CasaTabuleiro(boolean refugio) {
         this.refugio = refugio;
     }
-
+    
+    public void accept(Visitor visitor) {
+        visitor.visit(this.peca);
+    }
+    
     public boolean isTrono() {
         return trono;
     }

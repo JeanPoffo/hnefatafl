@@ -37,6 +37,7 @@ public class ViewGame extends JFrame implements ObserverGame {
     private JLabel    labelStatus;
     private JLabel    labelJogador;
     private JButton   botaoDesfazerJogada;
+    private JButton   botaoStatus;
     private JMenu     menuJogo;
     private JMenuBar  menuPrincipal;
     private JMenu     menuSobre;
@@ -167,6 +168,16 @@ public class ViewGame extends JFrame implements ObserverGame {
     public void atualizaStatusJogador(String status) {
         this.labelJogador.setText(status);
     }
+
+    @Override
+    public void atualizaStatusDesfazerJogada(boolean ativa) {
+        this.botaoDesfazerJogada.setEnabled(ativa);
+    }
+
+    @Override
+    public void atualizaStatusMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem, "Hnefatafl", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/view/icons/status.png")));
+    }
     
     private void initComponents() {
         this.tableModel           = new GameTableModel(ControllerGame.getInstance());
@@ -175,6 +186,7 @@ public class ViewGame extends JFrame implements ObserverGame {
         this.labelStatus          = new JLabel();
         this.labelJogador         = new JLabel();
         this.botaoDesfazerJogada  = new JButton();
+        this.botaoStatus          = new JButton();
         this.menuPrincipal        = new JMenuBar();
         this.menuJogo             = new JMenu();
         this.itemMenuNovoJogo     = new JMenuItem();
@@ -190,6 +202,10 @@ public class ViewGame extends JFrame implements ObserverGame {
 
         this.botaoDesfazerJogada.setText("Desfazer Jogada");
         this.botaoDesfazerJogada.setIcon(new ImageIcon(getClass().getResource("/view/icons/desfazer.png")));
+        this.botaoDesfazerJogada.setEnabled(false);
+        
+        this.botaoStatus.setText("Status");
+        this.botaoStatus.setIcon(new ImageIcon(getClass().getResource("/view/icons/status.png")));
         
         this.menuJogo.setText("Jogo");
 
@@ -232,6 +248,8 @@ public class ViewGame extends JFrame implements ObserverGame {
                 .addComponent(labelJogador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botaoDesfazerJogada)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botaoStatus)
                 .addContainerGap())
         );
         panelStatusLayout.setVerticalGroup(
@@ -241,6 +259,7 @@ public class ViewGame extends JFrame implements ObserverGame {
                 .addGroup(panelStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelStatus)
                     .addComponent(botaoDesfazerJogada)
+                    .addComponent(botaoStatus)
                     .addComponent(labelJogador))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -278,7 +297,7 @@ public class ViewGame extends JFrame implements ObserverGame {
         
         this.itemMenuSair.addActionListener((e) -> {
             System.exit(0);
-        });   
+        });
         
         this.itemMenuSobre.addActionListener((e) -> {
             JOptionPane.showMessageDialog(this, "Desenvolvido por Jean Poffo", "Hnefatafl", JOptionPane.INFORMATION_MESSAGE);
@@ -286,9 +305,11 @@ public class ViewGame extends JFrame implements ObserverGame {
         
         this.botaoDesfazerJogada.addActionListener((e) -> {
             this.controller.desfazUltimaJogada();
-            
-            /** @todo Melhorar isso aqui */
             this.tableModel.fireTableDataChanged();
+        });
+        
+        this.botaoStatus.addActionListener((e) -> {
+            this.controller.verificaStatus();
         });
     }
 }

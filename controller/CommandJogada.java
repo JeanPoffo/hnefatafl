@@ -29,9 +29,4 @@ public class CommandJogada implements Command {
         this.casaTabuleiroAnterior.setPeca(this.casaTabuleiroProxima.getPeca());
         this.casaTabuleiroProxima.setPeca(null);
     }
-
-    @Override
-    public void redo() {
-        this.execute();
-    }
 }

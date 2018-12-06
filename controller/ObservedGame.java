@@ -18,4 +18,8 @@ public interface ObservedGame {
     public void notifyStatusShake(String status);
     
     public void notifyStatusJogador(String status);
+    
+    public void notifyStatusDesfazerJogada(boolean ativa);
+    
+    public void notifyAtualizaStatusMensagem(String status);
 }

@@ -71,7 +71,7 @@ public class StrategyJogadaBase implements StrategyJogada {
      */
     protected void validaJogadaTrono(CasaTabuleiro casaTabuleiroAnterior, CasaTabuleiro casaTabuleiroAtual) throws Exception {
         if(casaTabuleiroAtual.isTrono()) {
-            if(!casaTabuleiroAnterior.getPeca().podeMovimentarTrono()) {
+            if(!casaTabuleiroAnterior.getPeca().pecaRei()) {
                 throw new Exception("Esta peça não pode entrar no Trono!");   
             }
         }

@@ -15,7 +15,7 @@ public class Rei extends Peca {
     }
 
     @Override
-    public boolean podeMovimentarTrono() {
+    public boolean pecaRei() {
         return true;
     }
 

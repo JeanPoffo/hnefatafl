@@ -40,7 +40,7 @@ abstract public class Peca {
         return false;
     }
     
-    public boolean podeMovimentarTrono() {
+    public boolean pecaRei() {
         return false;
     }
     

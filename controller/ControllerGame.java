@@ -1,10 +1,10 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.List;
 import model.CasaTabuleiro;
 import model.Game;
 import model.Jogador;
-import model.Rei;
 import model.StrategyTabuleiro;
 import view.ObserverGame;
 
@@ -74,9 +74,48 @@ public class ControllerGame implements InterfaceControllerGame {
 
     @Override
     public void desfazUltimaJogada() {
-        if(this.invokerJogada.undo()) {
-            this.alternaJogador();
+        this.invokerJogada.undo();
+        this.casaTabuleiroSelecionada = null;
+        this.alternaJogador();
+        this.notifyStatusDesfazerJogada(false);
+    }
+
+    @Override
+    public void verificaStatus() {
+        String status = ""; 
+        
+        VisitorContaPecas contaPecasAtacante = new VisitorContaPecas(this.getGame().getAtacante());
+        
+        for (CasaTabuleiro[] casasTabuleiros : this.getGame().getTabuleiro()) {
+            for (CasaTabuleiro casaTabuleiro : casasTabuleiros) {
+                casaTabuleiro.accept(contaPecasAtacante);
+            }
         }
+        status += "Peças do jogador " + this.getGame().getAtacante().getNome() + ": " + contaPecasAtacante.getNumeroPecas() + "\n";
+    
+        VisitorContaPecas contaPecasDefensor = new VisitorContaPecas(this.getGame().getDefensor());
+        
+        for (CasaTabuleiro[] casasTabuleiros : this.getGame().getTabuleiro()) {
+            for (CasaTabuleiro casaTabuleiro : casasTabuleiros) {
+                casaTabuleiro.accept(contaPecasDefensor);
+            }
+        }
+        status += "Peças do jogador " + this.getGame().getDefensor().getNome() + ": " + contaPecasDefensor.getNumeroPecas() + "\n";
+        
+        this.notifyAtualizaStatusMensagem(status);
+    }
+
+    @Override
+    public void finalizarGame() {
+        notifyAtualizaStatusMensagem("Parabéns! O jogador " + this.getGame().getJogadorAtual().getNome() + " venceu!");
+        System.exit(0);
+    }
+    
+    @Override
+    public void notifyAtualizaStatusMensagem(String status) {
+        this.observers.forEach((observer) -> {
+            observer.atualizaStatusMensagem(status);
+        });
     }
     
     @Override
@@ -97,6 +136,13 @@ public class ControllerGame implements InterfaceControllerGame {
     public void notifyStatusJogador(String status) {
         this.observers.forEach((observer) -> {
             observer.atualizaStatusJogador(status);
+        });
+    }
+    
+    @Override
+    public void notifyStatusDesfazerJogada(boolean ativa) {
+        this.observers.forEach((observer) -> {
+            observer.atualizaStatusDesfazerJogada(ativa);
         });
     }
     
@@ -141,19 +187,44 @@ public class ControllerGame implements InterfaceControllerGame {
         else {
             try {
                 /** Isso vai ser removido com um futuro Decorator */
-                if(this.casaTabuleiroSelecionada.getPeca() instanceof Rei) {
+                if(this.casaTabuleiroSelecionada.getPeca().pecaRei()) {
                     this.estrategiaJogadaRei.validaJogada(this.casaTabuleiroSelecionada, casaTabuleiroAtual, this.getGame().getTabuleiro());
                 }
                 else {
                     this.estrategiaJogada.validaJogada(this.casaTabuleiroSelecionada, casaTabuleiroAtual, this.getGame().getTabuleiro());
                 }
 
-                /** Adiciona a jogada ao Invoker e executa ela */
+                /** Só será permitido desfazer a ultima jogada */
+                this.invokerJogada.reset();
+                
+                if(this.casaTabuleiroSelecionada.getPeca().pecaRei() && casaTabuleiroAtual.isRefugio()) {
+                    this.finalizarGame();
+                }
+                
+                /** Adiciona a jogada ao Invoker */
                 this.invokerJogada.addCommand(new CommandJogada(this.casaTabuleiroSelecionada, casaTabuleiroAtual));
                 this.invokerJogada.execute();
+                
+                /** Decorator para "comer" as peças */
+                InterfaceCapturaPeca capturaPeca = new StrategyCapturaRei(new StrategyCapturaPecaBase(casaTabuleiroAtual, this.getGame().getTabuleiro()));
+                List<CasaTabuleiro> casasCapturar = capturaPeca.getCasasCapturaPeca();
+                
+                casasCapturar.forEach((casaTabuleiro) -> {
+                    if(casaTabuleiro.getPeca().pecaRei()) {
+                        this.finalizarGame();
+                    }
+                    
+                    /** Adiciona a captura ao Invoker */
+                    this.invokerJogada.addCommand(new CommandCapturaPeca(casaTabuleiro));
+                });
+                    
+                /** Executa os comandos */
+                this.invokerJogada.execute();
+                
                 this.casaTabuleiroSelecionada = null;
 
                 this.alternaJogador();
+                this.notifyStatusDesfazerJogada(true);
             }
             catch (Exception e) {
                 this.notifyStatus(e.getMessage());
@@ -192,9 +263,11 @@ public class ControllerGame implements InterfaceControllerGame {
      */
     private boolean alteraPecaAtual(CasaTabuleiro casaTabuleiroAnterior, CasaTabuleiro casaTabuleiroAtual) {
         if(casaTabuleiroAtual.getPeca() != null) {
-            if(casaTabuleiroAnterior.getPeca().getJogador().equals(casaTabuleiroAtual.getPeca().getJogador())) {
-                return true;
-            }
+//            if(casaTabuleiroAnterior.getPeca().getJogador() != null && casaTabuleiroAtual.getPeca().getJogador() != null) {
+                if(casaTabuleiroAnterior.getPeca().getJogador().equals(casaTabuleiroAtual.getPeca().getJogador())) {
+                    return true;
+                }
+//            }
         }
         
         return false;
